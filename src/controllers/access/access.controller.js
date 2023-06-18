@@ -1,6 +1,6 @@
 const { BadRequestError } = require("../../response/error/error.response")
-const bcrypt = require('bcrypt')
-const AccessService = require("../../services/AccessService")
+const AccessService = require("../../services/access.service")
+const { CreatedResponse } = require("../../response/success/success.response")
 
 
 class AccessController {
@@ -9,7 +9,10 @@ class AccessController {
     }
 
     signup = async(req, res, next) => {
-        await AccessService.signup(req.body)
+        new CreatedResponse({
+            message: 'User Created',
+            metaData: await AccessService.signup(req.body)
+        }).send(res)
     }
 }
 

@@ -6,7 +6,7 @@ const DOCUMENT_NAME = 'User'
 const COLLECTION_NAME = 'Users'
 
 var userSchema = new Schema({
-    usename: {
+    username: {
         type: String,
         required: true,
         trim: true,

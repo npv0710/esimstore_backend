@@ -482,6 +482,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"crypto@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "crypto@npm:1.0.1"
+  checksum: 087fe3165bd94c333a49e6ed66a0193911f63eac38a24f379b3001a5fe260a59c413646e53a0f67875ba13902b2686d81dc703cb2c147a4ec727dcdc04e5645e
+  languageName: node
+  linkType: hard
+
 "debug@npm:2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
@@ -627,6 +634,7 @@ __metadata:
   dependencies:
     bcrypt: ^5.1.0
     compression: ^1.7.4
+    crypto: ^1.0.1
     dotenv: ^16.1.4
     express: ^4.18.2
     helmet: ^7.0.0

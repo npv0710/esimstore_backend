@@ -4,7 +4,6 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const compression = require('compression')
 const router = require('./routes')
-const { ErrorNames, HttpStatusCodes } = require('./constants')
 const { NotFoundError } = require('./response/error/error.response')
 
 const app = express()

@@ -4,7 +4,8 @@ const HttpStatusCodes = {
     CONFLICT: 409,
     NOT_FOUND: 404,
     INTERNAL_SERVER_ERROR: 500,
-    UNAUTHORIZED: 401
+    UNAUTHORIZED: 401,
+    OK: 200
 }
 
 const ErrorNames = {
@@ -16,14 +17,20 @@ const ErrorNames = {
     UNAUTHORIZED: 'Unauthorized'
 }
 
-const userRole = {
+const UserRole = {
     USER: 'USER',
     MANAGER: 'MANAGER',
     ADMIN: 'ADMIN'
 }
 
+const SuccessResponseCode = {
+    CREATED: 'Created',
+    OK: 'Ok'
+}
+
 module.exports = {
     HttpStatusCodes,
     ErrorNames,
-    userRole
+    UserRole,
+    SuccessResponseCode
 }
