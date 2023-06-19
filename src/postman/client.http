@@ -1,14 +1,20 @@
-@URL_DEV= http://localhost:8080/api/v1
+@URL_DEV= http://127.0.0.1:8080/api/v1
 
 POST {{URL_DEV}}/user/signup
 Content-Type: application/json
 
 {
-    "username": "tuananh2",
-    "email": "tuananh2@gmail.com",
+    "username": "quanghai",
+    "email": "quanghai@gmail.com",
     "password": "123abc",
-    "mobile": "0902235566"
+    "mobile": "0862515616"
 }
 
 ###
-POST http://localhost:8080/api/v2/user/signin
+POST {{URL_DEV}}/user/signin
+Content-Type: application/json
+
+{
+    "email": "quanghai@gmail.com",
+    "password": "123abc"
+}

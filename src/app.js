@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
     const status = error.status || 500
-    res.status(status).json({
+    return res.status(status).json({
         name: error.name,
         status: status,
         message: error.message
