@@ -1,11 +1,14 @@
 const { BadRequestError } = require("../../response/error/error.response")
 const AccessService = require("../../services/access.service")
-const { CreatedResponse } = require("../../response/success/success.response")
+const { CreatedResponse, SigninedResponse } = require("../../response/success/success.response")
 
 
 class AccessController {
     signin  = async (req, res, next) => {
-        throw new BadRequestError({ message: 'Parmas not valid'})
+        new SigninedResponse({
+            message: 'Signin successfully',
+            metaData: await AccessService.signin(req.body)
+        }).send(res)
     }
 
     signup = async(req, res, next) => {

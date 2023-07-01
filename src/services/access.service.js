@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt')
 const KeyTokenService = require('./keytoken.service')
 const { createTokensPair } = require('../utils/auth.utils')
 const { getInfoData } = require('../utils/getInfoData.utils')
+const { findUserByEmail } = require('./user.service')
 
 class AccessService {
     static signup = async ({ username, email, password, mobile}) => {
@@ -46,6 +47,28 @@ class AccessService {
             }
         }
     }
+
+    static signin = async ({ email, password, refreshToken = null }) => {
+        const user = await findUserByEmail({ email })
+        if (!user) throw new BadRequestError({ message: 'User not registered'})
+        console.log('user login: ', user)
+        const match = await bcrypt.compare(password, user.password)
+        if (!match) throw new BadRequestError({ message: 'Invalid Credentials'})
+
+        const privateKey = crypto.randomBytes(64).toString('hex')
+        const publicKey = crypto.randomBytes(64).toString('hex')
+
+        const tokens = await createTokensPair({ userId: user._id, email: email}, publicKey, privateKey)
+
+        await KeyTokenService.createKeyToken({ userId: user._id, publicKey, privateKey, refreshToken: tokens.refreshToken })
+
+        return {
+            user: getInfoData({ fields: ['username', 'roles'], object: user}),
+            tokens
+        }
+
+    }
 }
+
 
 module.exports = AccessService
