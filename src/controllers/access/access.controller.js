@@ -1,6 +1,6 @@
 const { BadRequestError } = require("../../response/error/error.response")
 const AccessService = require("../../services/access.service")
-const { CreatedResponse, SigninedResponse } = require("../../response/success/success.response")
+const { CreatedResponse, SigninedResponse, LogedOutSuccess } = require("../../response/success/success.response")
 
 
 class AccessController {
@@ -15,6 +15,13 @@ class AccessController {
         new CreatedResponse({
             message: 'User Created',
             metaData: await AccessService.signup(req.body)
+        }).send(res)
+    }
+
+    logout = async (req, res, next) => {
+        new LogedOutSuccess({
+            message: 'LogedOut successfully',
+            metaData: await AccessService.logout({ keyStore: req.keyStore })
         }).send(res)
     }
 }

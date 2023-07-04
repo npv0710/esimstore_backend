@@ -1,5 +1,14 @@
 'use strict'
 const JWT = require('jsonwebtoken')
+const { handlerError } = require('../middleware/handler.error')
+const KeyTokenService = require('../services/keytoken.service')
+const { AuthFailureError } = require('../response/error/error.response')
+
+const HEADER = {
+    API_KEY: 'x-api-key',
+    CLIENT_ID: 'x-client-id',
+    AUTHORIZATION: 'authorization'
+}
 
 const createTokensPair = async (payLoad, publicKey, privateKey) => {
     try {
@@ -21,6 +30,35 @@ const createTokensPair = async (payLoad, publicKey, privateKey) => {
     }
 }
 
+const authentication = handlerError(async(req, res, next) => {
+    const userId = req.headers[HEADER.CLIENT_ID]
+    if (!userId) throw new AuthFailureError({ message: 'Client Invalid. Please provide user id!' })
+
+    const keyStore = await KeyTokenService.findUserById(userId)
+    if(!keyStore) throw new AuthFailureError({ message: 'Not found key store' })
+
+    console.log('key store of the user: ', keyStore)
+
+    const accessToken = req.headers[HEADER.AUTHORIZATION]
+    if (!accessToken) throw new AuthFailureError({ message: 'Access token required!' })
+
+    try {
+        const decodeUser = JWT.verify(accessToken, keyStore.publicKey)
+        if (userId !== decodeUser.userId) throw new AuthFailureError({ message : 'Invalid user Id!' })
+
+        req.keyStore = keyStore
+        return next()
+    }catch (err) {
+        throw err
+    }
+})
+
 module.exports = {
-    createTokensPair
+    createTokensPair,
+    authentication
 }
+
+
+
+
+

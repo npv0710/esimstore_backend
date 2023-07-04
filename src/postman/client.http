@@ -18,3 +18,12 @@ Content-Type: application/json
     "email": "quanghai@gmail.com",
     "password": "123abc"
 }
+
+###
+POST {{URL_DEV}}/user/logout
+Content-Type: application/logout
+Headers: x-clinet-id
+{
+    "email": "quanghai@gmail.com",
+    "password": "123abc"
+}

@@ -45,7 +45,21 @@ class SigninedResponse extends SuccessResponse {
     }
 }
 
+class LogedOutSuccess extends SuccessResponse {
+    constructor({
+        message,
+        statusCode = HttpStatusCodes.OK,
+        sucessResponseCode = SuccessResponseCode.OK,
+        metaData,
+        options = {}
+    }) {
+        super({ message, statusCode, sucessResponseCode, metaData })
+        this.options = options
+    }
+}
+
 module.exports = {
     CreatedResponse,
-    SigninedResponse
+    SigninedResponse,
+    LogedOutSuccess
 }

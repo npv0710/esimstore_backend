@@ -29,7 +29,18 @@ class NotFoundError extends ErrorResponse {
     }
 }
 
+class AuthFailureError extends ErrorResponse {
+    constructor({
+        name = ErrorNames.UNAUTHORIZED,
+        status = HttpStatusCodes.UNAUTHORIZED,
+        message = ''
+    }) {
+        super({ name, status, message })
+    }
+}
+
 module.exports = {
     BadRequestError,
-    NotFoundError
+    NotFoundError,
+    AuthFailureError
 }

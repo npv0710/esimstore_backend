@@ -9,6 +9,13 @@ const { getInfoData } = require('../utils/getInfoData.utils')
 const { findUserByEmail } = require('./user.service')
 
 class AccessService {
+
+    static logout = async({ keyStore }) => {
+        const delKey = await KeyTokenService.removeById(keyStore._id)
+        console.log('Key has just remove: ', delKey)
+        return delKey
+    }
+
     static signup = async ({ username, email, password, mobile}) => {
         const user = await userModel.findOne({ username }).lean().exec()
         if (user) {
@@ -63,7 +70,7 @@ class AccessService {
         await KeyTokenService.createKeyToken({ userId: user._id, publicKey, privateKey, refreshToken: tokens.refreshToken })
 
         return {
-            user: getInfoData({ fields: ['username', 'roles'], object: user}),
+            user: getInfoData({ fields: ['_id', 'username', 'roles'], object: user}),
             tokens
         }
 
