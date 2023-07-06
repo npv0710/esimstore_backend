@@ -7,7 +7,8 @@ const { AuthFailureError } = require('../response/error/error.response')
 const HEADER = {
     API_KEY: 'x-api-key',
     CLIENT_ID: 'x-client-id',
-    AUTHORIZATION: 'authorization'
+    AUTHORIZATION: 'authorization',
+    REFRESH_TOKEN: 'x-rtoken-id'
 }
 
 const createTokensPair = async (payLoad, publicKey, privateKey) => {
@@ -34,10 +35,26 @@ const authentication = handlerError(async(req, res, next) => {
     const userId = req.headers[HEADER.CLIENT_ID]
     if (!userId) throw new AuthFailureError({ message: 'Client Invalid. Please provide user id!' })
 
-    const keyStore = await KeyTokenService.findUserById(userId)
+    const keyStore = await KeyTokenService.findByUserId(userId)
     if(!keyStore) throw new AuthFailureError({ message: 'Not found key store' })
 
     console.log('key store of the user: ', keyStore)
+
+    if (req.headers[HEADER.REFRESH_TOKEN]) {
+        try {
+            const refreshToken = req.headers[HEADER.REFRESH_TOKEN]
+
+            const decoder = JWT.verify(refreshToken, keyStore.privateKey)
+            if (userId != decoder.userId) throw new AuthFailureError('UserId invalid!')
+
+            req.keyStore = keyStore
+            req.user = decoder
+            req.refreshToken = refreshToken
+            return next()
+        }catch (err) {
+            throw err
+        }
+    }
 
     const accessToken = req.headers[HEADER.AUTHORIZATION]
     if (!accessToken) throw new AuthFailureError({ message: 'Access token required!' })

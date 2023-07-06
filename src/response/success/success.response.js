@@ -58,8 +58,22 @@ class LogedOutSuccess extends SuccessResponse {
     }
 }
 
+class RefreshTokenSuccess extends SuccessResponse {
+    constructor({
+        message,
+        statusCode = HttpStatusCodes.OK,
+        sucessResponseCode = SuccessResponseCode.OK,
+        metaData,
+        options = {}
+    }) {
+        super({ message, statusCode, sucessResponseCode, metaData })
+        this.options = options
+    }
+}
+
 module.exports = {
     CreatedResponse,
     SigninedResponse,
-    LogedOutSuccess
+    LogedOutSuccess,
+    RefreshTokenSuccess
 }

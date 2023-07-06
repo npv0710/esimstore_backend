@@ -21,9 +21,6 @@ Content-Type: application/json
 
 ###
 POST {{URL_DEV}}/user/logout
-Content-Type: application/logout
-Headers: x-clinet-id
-{
-    "email": "quanghai@gmail.com",
-    "password": "123abc"
-}
+Content-Type: application/json
+x-client-id: 648ff273d5c7da056e7189d1
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDhmZjI3M2Q1YzdkYTA1NmU3MTg5ZDEiLCJlbWFpbCI6InF1YW5naGFpQGdtYWlsLmNvbSIsImlhdCI6MTY4ODQ4MjkxOCwiZXhwIjoxNjg4NTY5MzE4fQ.M1XQbCHgcqzC4ay2EE3EY--VJVjeve1pj-oJdGdI_-s

@@ -1,6 +1,6 @@
 const { BadRequestError } = require("../../response/error/error.response")
 const AccessService = require("../../services/access.service")
-const { CreatedResponse, SigninedResponse, LogedOutSuccess } = require("../../response/success/success.response")
+const { CreatedResponse, SigninedResponse, LogedOutSuccess, RefreshTokenSuccess } = require("../../response/success/success.response")
 
 
 class AccessController {
@@ -24,6 +24,16 @@ class AccessController {
             metaData: await AccessService.logout({ keyStore: req.keyStore })
         }).send(res)
     }
+
+    handlerRefreshToken = async (req, res, next) => {
+        new RefreshTokenSuccess({
+            message: 'Refresh token success',
+            metaData: await AccessService.handlerRefreshToken(
+                { user: req.user, refreshToken: req.refreshToken, keyStore: req.keyStore }
+            )
+        })
+    }
+
 }
 
 module.exports = new AccessController()

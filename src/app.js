@@ -33,7 +33,8 @@ app.use((error, req, res, next) => {
     return res.status(status).json({
         name: error.name,
         status: status,
-        message: error.message
+        message: error.message,
+        stack: error.stack
     })
 })
 

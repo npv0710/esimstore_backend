@@ -14,5 +14,6 @@ accessRouter.post('/user/signup', handlerError(accessController.signup))
 accessRouter.use(authentication)
 
 accessRouter.post('/user/logout', handlerError(accessController.logout))
+accessRouter.post('/user/refresh-token', handlerError(accessController.handlerRefreshToken))
 
 module.exports = accessRouter

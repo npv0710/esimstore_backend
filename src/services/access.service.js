@@ -1,14 +1,52 @@
 const { UserRole } = require('../constants')
 const userModel = require('../models/user.model')
-const { BadRequestError } = require('../response/error/error.response')
+const { BadRequestError, AuthFailureError, ForbiddenError } = require('../response/error/error.response')
 const crypto = require('crypto')
 const bcrypt = require('bcrypt')
 const KeyTokenService = require('./keytoken.service')
 const { createTokensPair } = require('../utils/auth.utils')
 const { getInfoData } = require('../utils/getInfoData.utils')
 const { findUserByEmail } = require('./user.service')
+const keytokenModel = require('../models/keytoken.model')
+const { Types } = require('mongoose')
 
 class AccessService {
+    static handlerRefreshToken = async({ keyStore, user, refreshToken }) => {
+        const {　userId, email } = user;
+
+        if (keyStore.refreshTokensUsed.includes(refreshToken)) {
+            await KeyTokenService.deleteKeyByUserId(userId)
+            throw new ForbiddenError('Something went wrong! Please　login again')
+        }
+
+        if (keyStore.refreshToken !== refreshToken) throw new AuthFailureError('User not registered!')
+
+        const userFound = await findUserByEmail({ email })
+        if(!userFound) throw new AuthFailureError('User not registered')
+
+        const tokens = await createTokensPair({ userId, email }, keyStore.publicKey, keyStore.privateKey)
+
+        console.log('key store update in the service:')
+        // console.log(keyStore)
+        // console.log(typeof(keyStore))
+
+        const keyStore2 = keytokenModel.findOne({ user: new Types.ObjectId( userId )})
+        console.log(keyStore2)
+
+        await keyStore2.update({
+            $set: {
+                refreshToken: tokens.refreshToken
+            },
+            $addToSet: {
+                refreshTokenUsed: refreshToken
+            }
+        })
+
+        return {
+            user,
+            tokens
+        }
+    }
 
     static logout = async({ keyStore }) => {
         const delKey = await KeyTokenService.removeById(keyStore._id)
