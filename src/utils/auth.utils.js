@@ -36,6 +36,7 @@ const authentication = handlerError(async(req, res, next) => {
     if (!userId) throw new AuthFailureError({ message: 'Client Invalid. Please provide user id!' })
 
     const keyStore = await KeyTokenService.findByUserId(userId)
+    
     if(!keyStore) throw new AuthFailureError({ message: 'Not found key store' })
 
     console.log('key store of the user: ', keyStore)

@@ -27,20 +27,30 @@ class AccessService {
         const tokens = await createTokensPair({ userId, email }, keyStore.publicKey, keyStore.privateKey)
 
         console.log('key store update in the service:')
-        // console.log(keyStore)
-        // console.log(typeof(keyStore))
+        console.log(keyStore)
+        console.log(typeof(keyStore))
 
-        const keyStore2 = keytokenModel.findOne({ user: new Types.ObjectId( userId )})
-        console.log(keyStore2)
+        let arrTokenUsed = keyStore.refreshTokensUsed.push(keyStore.refreshToken)
+        const filter = { _id: keyStore._id }
+        const update = {
+            refreshToken: tokens.refreshToken,
+            refreshTokensUsed: arrTokenUsed
+        }
+        const options = {
+            upsert: true,
+            new: true
+        }
 
-        await keyStore2.update({
-            $set: {
-                refreshToken: tokens.refreshToken
-            },
-            $addToSet: {
-                refreshTokenUsed: refreshToken
-            }
-        })
+        await keytokenModel.findOneAndUpdate(filter, update, options)
+
+        // await keytokenModel.update({
+        //     $set: {
+        //         refreshToken: tokens.refreshToken
+        //     },
+        //     $addToSet: {
+        //         refreshTokenUsed: refreshToken
+        //     }
+        // })
 
         return {
             user,

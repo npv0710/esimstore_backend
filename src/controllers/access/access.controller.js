@@ -31,7 +31,7 @@ class AccessController {
             metaData: await AccessService.handlerRefreshToken(
                 { user: req.user, refreshToken: req.refreshToken, keyStore: req.keyStore }
             )
-        })
+        }).send(res)
     }
 
 }

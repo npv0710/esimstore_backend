@@ -10,7 +10,7 @@ class MongoDb {
 
     options = {
         maxPoolSize: 10,
-        //useUnifiedTopology: true
+        useUnifiedTopology: true
     }
 
     connect() {

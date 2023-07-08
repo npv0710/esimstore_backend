@@ -4,7 +4,7 @@ const dev = {
         basePath: process.env.BASE_PATH || '/api/v1'
     },
     db: {
-        mongoDbUri: process.env.DEV_MONGODB_URI || 'mongodb://localhost:27017/aliconcon'
+        mongoDbUri: process.env.DEV_MONGODB_URI || 'mongodb://127.0.0.1:27017/aliconcon'
     }
 }
 
